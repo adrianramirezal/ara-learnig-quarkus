@@ -30,7 +30,7 @@ public class GreetingResource {
     public String hello() {
         LOGGER.debug("@@@ Start");
         String msg = "Hello " + config.getRecipient() + " " + message;
-        LOGGER.info("@@@ message =" + msg);
+        LOGGER.info("@@@ message: " + msg);
         return msg;
     }
 }
