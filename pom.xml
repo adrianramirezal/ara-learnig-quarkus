@@ -10,6 +10,7 @@
     <modules>
         <module>app</module>
         <module>cmd-app-nsql</module>
+        <module>service</module>
     </modules>
 
     <dependencies>
