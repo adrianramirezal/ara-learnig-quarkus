@@ -1,6 +1,8 @@
 package com.pt.ara.quarkus.learning;
 
+import io.quarkus.arc.Arc;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -26,6 +28,8 @@ public class GreetingResource {
 
     @Inject
     DataSource dataSource;
+    @Inject
+    EntityManager entityManager;
 
     @Inject
     public GreetingResource(
@@ -58,7 +62,7 @@ public class GreetingResource {
             try (Statement stmt = connection.createStatement()) {
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    rooms.add(new Room(rs.getString("NAME"), rs.getString("ROOM_NUMBER"),
+                    rooms.add(new Room(rs.getLong("ROOM_ID"), rs.getString("NAME"), rs.getString("ROOM_NUMBER"),
                             rs.getString("BED_INFO")));
                 }
             }
@@ -66,6 +70,19 @@ public class GreetingResource {
             e.printStackTrace();
         }
         rooms.forEach(System.out::println);
+        LOGGER.debug("@@@ End Select");
+        return rooms;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/rooms/v2")
+    public List<Room> getRoomsV2() {
+        LOGGER.debug("@@@ Start Select");
+        Arc.container().requestContext().activate();
+        List<Room> rooms = entityManager.createQuery("select r from Room r", Room.class).getResultList();
+        rooms.forEach(System.out::println);
+        Arc.container().requestContext().deactivate();
         LOGGER.debug("@@@ End Select");
         return rooms;
     }
