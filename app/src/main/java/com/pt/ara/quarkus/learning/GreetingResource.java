@@ -55,7 +55,7 @@ public class GreetingResource {
     @Path("/rooms")
     public List<Room> getRooms() {
         LOGGER.debug("@@@ Start Select");
-        String sql = "SELECT NAME, ROOM_NUMBER, BED_INFO FROM ROOM";
+        String sql = "SELECT ROOM_ID, NAME, ROOM_NUMBER, BED_INFO FROM ROOM";
         List<Room> rooms = new ArrayList<>();
         try {
             Connection connection = dataSource.getConnection();
