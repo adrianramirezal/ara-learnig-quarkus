@@ -12,6 +12,7 @@
         <module>cmd-app-nsql</module>
         <module>service</module>
         <module>service-client</module>
+        <module>service-graphql</module>
     </modules>
 
     <dependencies>
